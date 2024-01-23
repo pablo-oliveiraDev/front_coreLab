@@ -1,7 +1,11 @@
 import Image from "next/image";
 import styles from '@/assets/styles/pages/login.module.sass'
 import Link from "next/link";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Login"  
+};
 export default function Home() {
   return (
     <div className={styles.container}>

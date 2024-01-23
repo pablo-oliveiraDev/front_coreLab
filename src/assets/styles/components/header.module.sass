@@ -1,0 +1,13 @@
+@import '../mixins'
+@import '../variables'
+
+.container
+    @include horizontalAlignFleX
+    width: 100vw
+    height: 60px
+    background: #fff
+    ul
+        width: 100vw
+        @include horizontalAlignFleX
+        justify-content: space-around
+        list-style: none
