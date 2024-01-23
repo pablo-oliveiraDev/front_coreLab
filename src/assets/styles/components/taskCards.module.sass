@@ -1,0 +1,22 @@
+@import '../mixins'
+@import '../variables'
+
+.container
+    @include verticalAlignFlex
+    background: $White
+    width: 20vw
+    height: 22vw
+    border:2px solid #d9d9d9
+    border-radius: 25px
+    padding: 15px
+
+    .boxTitle
+        width: 100%
+        @include horizontalAlignFleX
+        justify-content: space-between
+        input
+            border: none
+
+        textarea
+            width:100%
+            
