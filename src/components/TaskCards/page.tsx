@@ -1,30 +1,32 @@
 import React from "react";
-import styles from "@/assets/styles/components/taskCards.module.sass";
-import { IoIosStarOutline } from "react-icons/io";
+import styles from "../../assets/styles/components/taskCards.module.sass";
+import Image from "next/image";
+import star from "../../assets/images/svg/star.svg";
+import pencil from "../../assets/images/svg/pencil.svg";
+import bucket from "../../assets/images/svg/bucket.svg";
 import { IoMdClose } from "react-icons/io";
-import { GoPencil } from "react-icons/go";
-import { LuPaintBucket } from "react-icons/lu";
 
-const TaskCards = ({ Task, Title }:any) => {
+const TaskCards = ({ Task, Title }: any) => {
   return (
     <div className={styles.container}>
       <section className={styles.boxTitle}>
         <input type="text" placeholder="Titulo" />
-        <IoIosStarOutline />
+        <Image src={star} alt="icon star" />
       </section>
+      <hr className={styles.line} />
       <section className={styles.boxTask}>
         <textarea
-          name="descripcion"
-          id=""
+          name="tasksTxt"
+          className={styles.tasksTxt}
           cols={30}
-          rows={1}
+          rows={15}
           placeholder="digite a sua tarefa..."
-        />
+          style={{ resize: "none", width: "100%",height:"200px",border:"none" }}></textarea>
       </section>
       <div className={styles.boxEdits}>
-        <GoPencil />
-        <LuPaintBucket />
-        <IoMdClose />
+        <Image src={pencil} alt="icon star" />
+        <Image src={bucket} alt="icon star" />
+        <IoMdClose className={styles.closeIcon} />
       </div>
     </div>
   );
