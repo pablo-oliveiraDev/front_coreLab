@@ -20,7 +20,7 @@ const TaskCards = ({ Task, Title }: any) => {
           className={styles.tasksTxt}
           cols={30}
           rows={15}
-          placeholder="digite a sua tarefa..."
+          placeholder="digite aqui a nota..."
           style={{ resize: "none", width: "100%",height:"200px",border:"none" }}></textarea>
       </section>
       <div className={styles.boxEdits}>

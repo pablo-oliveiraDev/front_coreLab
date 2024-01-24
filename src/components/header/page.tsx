@@ -1,19 +1,27 @@
 import React from "react";
 import styles from "../../assets/styles/components/header.module.sass";
-import iconMenu from '@/assets/images/iconCoreLab.png';
-import Image from 'next/image';
+import { IoMdClose } from "react-icons/io";
+import {FaRegUserCircle} from 'react-icons/fa'
+import iconMenu from "@/assets/images/iconCoreLab.png";
+import searchIcon from "@/assets/images/svg/search.svg";
+import Image from "next/image";
 
 const Header = () => {
   return (
     <header className={styles.container}>
       <ul>
-        <li><Image src={iconMenu} alt='icon menu'/></li>
+        <li>
+          <Image src={iconMenu} alt="icon menu" />
+          Core notes
+          <input type="text" placeholder="Pesquisar notas" />
+          <Image
+            className={styles.imgSearch}
+            src={searchIcon}
+            alt="search icon"
+          />
+        </li>
 
-        <li>Contatos</li>
-
-        <li>Sobre</li>
-
-        <li>Vendedores</li>
+        <li><FaRegUserCircle size={30}/><IoMdClose/></li>
       </ul>
     </header>
   );
