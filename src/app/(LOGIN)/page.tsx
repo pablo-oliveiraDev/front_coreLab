@@ -17,7 +17,7 @@ export default function Home() {
   const HandlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     SetPassword(e.target.value);
   };
-
+console.log(password)
   return (
     
     <div className={styles.container}>

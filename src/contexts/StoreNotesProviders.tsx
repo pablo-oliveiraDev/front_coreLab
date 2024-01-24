@@ -1,36 +1,42 @@
-"use client"
+"use client";
 import { createContext, useState } from "react";
-
+import api from "@/components/Services/api";
 
 export const StoreNotesContext = createContext({});
 
 export const StoreNotesProvider = ({ children }: any) => {
   const [loading, SetLoading] = useState<boolean>();
-  const [data, SetData] = useState<string[]>([]);
+  const [user, SetUser] = useState<string[]>();
   const Login = async (email: string, password: string) => {
     SetLoading(true);
-    try {
-      
-      console.log(loading)
-      const response = await fetch(`http://localhost:5080/login`, {
-        method: "Post",
-        body: JSON.stringify({ email:email, password:password }),
+    let newData = {
+      email: email,
+      password: password,
+    };
+    console.log(loading);
+    await api
+      .post(`${process.env.API}/login`, newData)
+      .then((res) => {
+        console.log(res.data.status.json());
+        let dataUser: any = {
+          id: res.data.id,
+          userName: res.data.userName,
+          email: res.data.email,
+          userImage: res.data.userImage,
+        };
+        SetUser(dataUser);
+        console.log(user);
       })
-      const res = await response.json();
-      SetData(res)
-      console.log(data)
-    } catch (error) {
-      console.log(error);
-    } finally {
-      SetLoading(false)
-    }
-   
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+    
   return (
     <StoreNotesContext.Provider
       value={{
         Login,
-      
         loading,
       }}>
       {children}
