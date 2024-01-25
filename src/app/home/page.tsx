@@ -8,7 +8,19 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Home",
 };
-export default function Home() {
+
+export const dataTask =async()=>{
+  const response=await fetch(`${process.env.API}/allUsers`,{
+    method:"GET",
+    cache:"no-cache"
+  });
+  const data = response.json();
+  return data;
+}
+
+export default async function Home() {
+  const user:any =await dataTask();
+  console.log({user})
   return (
     <div className={styles.container}>
       <Header />

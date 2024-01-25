@@ -1,38 +1,30 @@
 "use client";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import api from "@/components/Services/api";
 
 export const StoreNotesContext = createContext({});
-
-export const StoreNotesProvider = ({ children }: any) => {
-  const [loading, SetLoading] = useState<boolean>();
-  const [user, SetUser] = useState<string[]>();
-  const Login = async (email: string, password: string) => {
-    SetLoading(true);
+let dataUser: any;
+  async function Login(email: string, password: string) {
     let newData = {
       email: email,
       password: password,
     };
-    console.log(loading);
-    await api
-      .post(`${process.env.API}/login`, newData)
-      .then((res) => {
-        console.log(res.data.status.json());
-        let dataUser: any = {
-          id: res.data.id,
-          userName: res.data.userName,
-          email: res.data.email,
-          userImage: res.data.userImage,
-        };
-        SetUser(dataUser);
-        console.log(user);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
+    const response = await api.post(`/login`, newData);
+    dataUser = await response.data;
     
+  }
+
+export const StoreNotesProvider = ({ children }: any) => {
+  const [loading, SetLoading] = useState<boolean>();
+  const [user, SetUser] = useState<string[]>([]);
+
+
+  useEffect(() => {
+    SetUser(dataUser);
+  }, []);
+
+ 
   return (
     <StoreNotesContext.Provider
       value={{
