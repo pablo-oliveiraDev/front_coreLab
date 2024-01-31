@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "../../assets/styles/components/taskCards.module.sass";
 import Image from "next/image";
-import star from "../../assets/images/svg/star.svg";
-import pencil from "../../assets/images/svg/pencil.svg";
-import bucket from "../../assets/images/svg/bucket.svg";
+import Star from "../../assets/images/svg/star.svg";
+import Pencil from "../../assets/images/svg/pencil.svg";
+import Bucket from "../../assets/images/svg/bucket.svg";
 import { IoMdClose } from "react-icons/io";
 
 const TaskCards = ({ Task, Title }: any) => {
@@ -11,7 +11,7 @@ const TaskCards = ({ Task, Title }: any) => {
     <div className={styles.container}>
       <section className={styles.boxTitle}>
         <input type="text" placeholder="Titulo" />
-        <Image src={star} alt="icon star" />
+        <Image src={Star} alt="icon star" />
       </section>
       <hr className={styles.line} />
       <section className={styles.boxTask}>
@@ -24,8 +24,8 @@ const TaskCards = ({ Task, Title }: any) => {
           style={{ resize: "none", width: "100%",height:"200px",border:"none" }}></textarea>
       </section>
       <div className={styles.boxEdits}>
-        <Image src={pencil} alt="icon star" />
-        <Image src={bucket} alt="icon star" />
+        <Image src={Pencil} alt="icon star" />
+        <Image src={Bucket} alt="icon star" />
         <IoMdClose className={styles.closeIcon} />
       </div>
     </div>

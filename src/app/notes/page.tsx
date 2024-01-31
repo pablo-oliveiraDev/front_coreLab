@@ -1,26 +1,26 @@
 import React from "react";
 import TaskCards from "@/components/TaskCards/page";
 import styles from "@/assets/styles/pages/home.module.sass";
-import Header from "@/components/header/page";
-import Loading from "@/components/loading/loading";
+import Header from "@/components/Header/page";
+import Loading from "@/components/Loading/loading";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Home",
 };
 
-export const dataTask =async()=>{
-  const response=await fetch(`${process.env.API}/allUsers`,{
-    method:"GET",
-    cache:"no-cache"
+export const dataTask = async () => {
+  const response = await fetch(`${process.env.REACT_APP_API}/allUsers`, {
+    method: "GET",
+    cache: "no-cache",
   });
   const data = response.json();
   return data;
-}
+};
 
-export default async function Home() {
-  const user:any =await dataTask();
-  console.log({user})
+export default async function Notes() {
+  const user: any = await dataTask();
+  console.log({ user });
   return (
     <div className={styles.container}>
       <Header />

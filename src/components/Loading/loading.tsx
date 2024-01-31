@@ -1,6 +1,6 @@
 import styles from "@/assets/styles/components/loading.module.sass";
 
-export default function Loading() {
+export default function LoadingPage() {
   return (
     <div className={styles.loadingContainer}>
       <section className={styles.textContainer}>

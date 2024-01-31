@@ -1,10 +1,9 @@
-import UsrLogin from "@/components/login/page";
+import UsrLogin from "@/components/Login/page";
 
-export default function Home() { 
-
+export default function Home() {
   return (
-   <>
-   <UsrLogin/>
-   </>
+    <>
+      <UsrLogin />
+    </>
   );
 }
