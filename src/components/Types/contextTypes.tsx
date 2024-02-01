@@ -8,13 +8,18 @@ export type InitialValue = {
     Loading: boolean;
     Login: (email: string, password: string) => void;
 };
+type  UserImages={
+    id?: string;
+    image?: string;
+    userId?: string;
+};
 export interface UserProps {
-    id: string;
-    userName: string;
-    email: string;
-    password: string;
+    msg?: string;
+    id?: string;
+    userName?: string;
+    email?: string;
+    password?: string;
     createdAt?: string;
-    userImages: {
-        id?: string;
-    };
+    userImages?: UserImages[];
+   
 }
