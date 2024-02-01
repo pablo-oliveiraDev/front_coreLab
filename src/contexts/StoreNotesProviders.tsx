@@ -1,7 +1,9 @@
 'use client';
 import { createContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import * as T from '@/components/Types/contextTypes';
 import Api from '@/components/Services/api';
+//import { setTimeout } from 'timers';
 
 export const StoreNotesContext = createContext<T.InitialValue>(
     {} as T.InitialValue
@@ -10,6 +12,9 @@ export const StoreNotesContext = createContext<T.InitialValue>(
 export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [Loading, SetLoading] = useState<boolean>(false);
     const [User, SetUser] = useState<T.UserProps>({} as T.UserProps);
+    const [Loged,SetLoged]=useState<boolean>(false);
+    const [Status, SetStatus] = useState<Number>();
+    const router = useRouter();
 
     async function Login(email: string, password: string) {
         let NewData = {
@@ -21,21 +26,30 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             SetLoading(true);
             await Api.post('/login', NewData).then(res => {
                 SetUser(res.data);
+                SetStatus(res.status);
             });
         } catch (error: any) {
-            console.log('context error: ' + error + User.msg);
+            console.log('context error: ' + error + 'msg :' + User.msg);
             SetUser('');
         } finally {
-            SetLoading(false);
+            SetLoged(true);
+            setTimeout(function () {
+                SetLoading(false);
+            }, 10000);
         }
     }
+    if (Status === 200) {
+        router.push('/notes', { scroll: false });
+    }
     console.log(User);
+    console.log(Status);
 
     return (
         <StoreNotesContext.Provider
             value={{
                 Loading,
-                Login
+                Login,
+                Loged,
             }}
         >
             {children}
@@ -44,32 +58,3 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
 };
 
 export default StoreNotesProvider;
-
-// login
-// :
-// createdAt
-// :
-// "19/01/2024 00:33:51"
-// email
-// :
-// "pabloliverfe@gmail.com"
-// id
-// :
-// "65a9eda494605fb37d463fc3"
-// password
-// :
-// "pablo020685"
-// userImages
-// :
-// Array(1)
-// 0
-// :
-// id
-// :
-// "65a9eda494605fb37d463fc4"
-// image
-// :
-// "iVBORw0KGgoAAAANSUhEUgAAB4AAAAQ4CAIAAABnsVYUAAAAA
-// userId
-// :
-// "65a9eda494605fb37d463fc3"

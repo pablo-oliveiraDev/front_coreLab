@@ -7,8 +7,9 @@ export type UserContextProps = {
 export type InitialValue = {
     Loading: boolean;
     Login: (email: string, password: string) => void;
+    Loged: boolean;
 };
-type  UserImages={
+type UserImages = {
     id?: string;
     image?: string;
     userId?: string;
@@ -21,5 +22,4 @@ export interface UserProps {
     password?: string;
     createdAt?: string;
     userImages?: UserImages[];
-   
 }

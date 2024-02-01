@@ -2,28 +2,12 @@
 import styles from '@/assets/styles/pages/login.module.sass';
 import LoadingPage from '@/components/Loading/loading';
 import Link from 'next/link';
+import * as T from '@/components/Types/contextTypes';
 import { useContext, useState } from 'react';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 
-// async function Login(email: string, password: string) {
-//   let newData = {
-//     email: email,
-//     password: password
-//   };
-//   const response = await fetch(`${process.env.REACT_APP_API}/login`, {
-//     cache: 'force-cache',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     next: { revalidate: false },
-//     body: JSON.stringify(newData)
-//   });
-//   console.log(response.status);
-//   dataUser = await response.json();
-//   console.log(dataUser);
-// }
 export default function UsrLogin() {
-    const { Login, Loading }: any = useContext(StoreNotesContext);
+    const { Login, Loading }: T.InitialValue = useContext(StoreNotesContext);
     const [email, SetEmail] = useState<string>('');
     const [password, SetPassword] = useState<string>('');
 
@@ -43,7 +27,6 @@ export default function UsrLogin() {
             </div>
             <form className={styles.itensForm}>
                 <h3>Login Here</h3>
-
                 <label htmlFor="username">Username</label>
                 <input
                     type="email"
