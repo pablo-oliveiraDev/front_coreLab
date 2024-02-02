@@ -41,8 +41,9 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     if (Status === 200) {
         router.push('/notes', { scroll: false });
     }
-    console.log(User);
-    console.log(Status);
+    const Logout = ()=>{
+        SetLoged(false);
+    }
 
     return (
         <StoreNotesContext.Provider
