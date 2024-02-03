@@ -12,7 +12,7 @@ export const StoreNotesContext = createContext<T.InitialValue>(
 export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [Loading, SetLoading] = useState<boolean>(false);
     const [User, SetUser] = useState<T.UserProps>({} as T.UserProps);
-    const [Loged,SetLoged]=useState<boolean>(false);
+    const [Loged, SetLoged] = useState<boolean>(false);
     const [Status, SetStatus] = useState<Number>();
     const router = useRouter();
 
@@ -41,16 +41,18 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     if (Status === 200) {
         router.push('/notes', { scroll: false });
     }
-    const Logout = ()=>{
+    const Logout = () => {
         SetLoged(false);
-    }
+    };
+
+    const CreateLogin = async (userName:string,email:string,password:string,userImage:string) => {};
 
     return (
         <StoreNotesContext.Provider
             value={{
                 Loading,
                 Login,
-                Loged,
+                Loged
             }}
         >
             {children}

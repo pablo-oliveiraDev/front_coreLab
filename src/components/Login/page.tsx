@@ -54,7 +54,7 @@ export default function UsrLogin() {
                 </button>
                 <div className={styles.social}>
                     <span>Dont have login? </span>
-                    <Link href="#">click here for sign up</Link>
+                    <Link href="/signup">click here for sign up</Link>
                 </div>
             </form>
         </div>
