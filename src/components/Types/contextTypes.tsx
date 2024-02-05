@@ -8,6 +8,7 @@ export type InitialValue = {
     Loading: boolean;
     Login: (email: string, password: string) => void;
     Loged: boolean;
+    Mensage: string;
 };
 type UserImages = {
     id?: string;

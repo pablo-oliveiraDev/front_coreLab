@@ -3,7 +3,6 @@ import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as T from '@/components/Types/contextTypes';
 import Api from '@/components/Services/api';
-//import { setTimeout } from 'timers';
 
 export const StoreNotesContext = createContext<T.InitialValue>(
     {} as T.InitialValue
@@ -14,6 +13,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [User, SetUser] = useState<T.UserProps>({} as T.UserProps);
     const [Loged, SetLoged] = useState<boolean>(false);
     const [Status, SetStatus] = useState<Number>();
+    const [Mensage, SetMensage] = useState<string>('');
     const router = useRouter();
 
     async function Login(email: string, password: string) {
@@ -27,9 +27,10 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             await Api.post('/login', NewData).then(res => {
                 SetUser(res.data);
                 SetStatus(res.status);
+                SetMensage(res.data.msg);
             });
         } catch (error: any) {
-            console.log('context error: ' + error + 'msg :' + User.msg);
+            console.log('login error: ' + error + 'msg :' + User.msg);
             SetUser('');
         } finally {
             SetLoged(true);
@@ -43,21 +44,51 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     }
     const Logout = () => {
         SetLoged(false);
+        SetUser('');
+        router.push('/');
     };
 
-    const CreateLogin = async (userName:string,email:string,password:string,userImage:string) => {};
+    const CreateLogin = async (
+        userName: string,
+        email: string,
+        password: string,
+        userImage: string
+    ) => {
+        if (userName && email && password) {
+            let data = {
+                userName: userName,
+                email: email,
+                password: password,
+                userImage: userImage
+            };
+            try {
+                SetLoading(true);
+                await Api.post('/createUser', data).then(res => {
+                    SetStatus(res.status);
+                    SetMensage(res.data.msg);
+                });
+            } catch (err) {
+                console.log('createUser error :' + err + '\n msg:' + Mensage);
+                SetMensage('');
+            } finally {
+                setTimeout(function () {
+                    SetLoading(false);
+                }, 10000);
+            }
+        }
 
-    return (
-        <StoreNotesContext.Provider
-            value={{
-                Loading,
-                Login,
-                Loged
-            }}
-        >
-            {children}
-        </StoreNotesContext.Provider>
-    );
+        return (
+            <StoreNotesContext.Provider
+                value={{
+                    Loading,
+                    Login,
+                    Loged,
+                    Mensage
+                }}
+            >
+                {children}
+            </StoreNotesContext.Provider>
+        );
+    };
 };
-
 export default StoreNotesProvider;
