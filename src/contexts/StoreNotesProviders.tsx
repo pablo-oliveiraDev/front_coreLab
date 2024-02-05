@@ -31,7 +31,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             });
         } catch (error: any) {
             console.log('login error: ' + error + 'msg :' + User.msg);
-            SetUser('');
+            //SetUser('');
         } finally {
             SetLoged(true);
             setTimeout(function () {
@@ -42,9 +42,10 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     if (Status === 200) {
         router.push('/notes', { scroll: false });
     }
+
     const Logout = () => {
         SetLoged(false);
-        SetUser('');
+        //SetUser('');
         router.push('/');
     };
 
@@ -76,19 +77,20 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 }, 10000);
             }
         }
-
-        return (
-            <StoreNotesContext.Provider
-                value={{
-                    Loading,
-                    Login,
-                    Loged,
-                    Mensage
-                }}
-            >
-                {children}
-            </StoreNotesContext.Provider>
-        );
     };
+
+    return (
+        <StoreNotesContext.Provider
+            value={{
+                Loading,
+                Login,
+                Loged,
+                Mensage
+            }}
+        >
+            {children}
+        </StoreNotesContext.Provider>
+    );
 };
+
 export default StoreNotesProvider;
