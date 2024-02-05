@@ -12,7 +12,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [Loading, SetLoading] = useState<boolean>(false);
     const [User, SetUser] = useState<T.UserProps>({} as T.UserProps);
     const [Loged, SetLoged] = useState<boolean>(false);
-    const [Status, SetStatus] = useState<Number>();
+    const [Status, SetStatus] = useState<number>();
     const [Mensage, SetMensage] = useState<string>('');
     const router = useRouter();
 
@@ -31,7 +31,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             });
         } catch (error: any) {
             console.log('login error: ' + error + 'msg :' + User.msg);
-            SetUser('');
+            //SetUser('');
         } finally {
             SetLoged(true);
             setTimeout(function () {
@@ -44,11 +44,11 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     }
     const Logout = () => {
         SetLoged(false);
-        SetUser('');
+        //SetUser('');
         router.push('/');
     };
 
-    const CreateLogin = async (
+    const CreateUser = async (
         userName: string,
         email: string,
         password: string,
@@ -69,6 +69,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 });
             } catch (err) {
                 console.log('createUser error :' + err + '\n msg:' + Mensage);
+                console.log(Status)
                 SetMensage('');
             } finally {
                 setTimeout(function () {
@@ -83,7 +84,8 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                     Loading,
                     Login,
                     Loged,
-                    Mensage
+                    Mensage,                    
+                    CreateUser
                 }}
             >
                 {children}

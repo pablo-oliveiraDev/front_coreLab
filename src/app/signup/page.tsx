@@ -1,14 +1,18 @@
-'use client'
+'use client';
 import React, { useContext, useState } from 'react';
 import styles from '@/assets/styles/pages/login.module.sass';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
-import LoadingPage from "@/components/Loading/loading"
+import * as T from '@/components/Types/contextTypes';
+import LoadingPage from '@/components/Loading/loading';
 import Link from 'next/link';
 
 export default function Signup() {
-    const {Loading} =useContext(StoreNotesContext)
-    const [email, SetEmail] = useState<string>('');
-    const [password, SetPassword] = useState<string>('');
+    const { Loading, CreateUser }: T.InitialValue =
+        useContext(StoreNotesContext);
+    const [UserName, SetUserName] = useState<string>('');
+    const [Email, SetEmail] = useState<string>('');
+    const [Password, SetPassword] = useState<string>('');
+    const [UserImage, SetUserImage] = useState<string>('');
     return (
         <div className={styles.container}>
             {Loading && <LoadingPage />}
@@ -20,29 +24,47 @@ export default function Signup() {
                 <h3>Create Login</h3>
                 <label htmlFor="username">Username</label>
                 <input
-                    type="email"
-                    placeholder="Email "
+                    type="text"
+                    placeholder="Name "
                     id="username"
-                    value={email}
+                    value={UserName}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        SetUserName(e.target.value)
+                    }
+                />
+
+                <label htmlFor="email">Email</label>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    id="email"
+                    value={Email}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         SetEmail(e.target.value)
                     }
                 />
-
                 <label htmlFor="password">Password</label>
                 <input
                     type="password"
                     placeholder="Password"
                     id="password"
-                    value={password}
+                    value={Password}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         SetPassword(e.target.value)
                     }
                 />
+                <label htmlFor="UserImage">Image</label>
+                <input
+                    type="file"
+                    placeholder="image"
+                    id="UserImage"
+                    value={UserImage}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        SetUserImage(e.target.value)
+                    }
+                />
 
-                <button className={styles.btnLogin} >
-                    Create
-                </button>
+                <button className={styles.btnLogin}>Create</button>
                 <div className={styles.social}>
                     <span>Back to login? </span>
                     <Link href="/">click here </Link>
