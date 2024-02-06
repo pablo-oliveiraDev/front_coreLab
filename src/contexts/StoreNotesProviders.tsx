@@ -80,18 +80,19 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
         }
     };
 
-        return (
-            <StoreNotesContext.Provider
-                value={{
-                    Loading,
-                    Login,
-                    Loged,
-                    Mensage
-                }}
-            >
-                {children}
-            </StoreNotesContext.Provider>
-        );
-    };
+    return (
+        <StoreNotesContext.Provider
+            value={{
+                Loading,
+                Login,
+                Loged,
+                Mensage,
+                CreateUser
+            }}
+        >
+            {children}
+        </StoreNotesContext.Provider>
+    );
 };
+
 export default StoreNotesProvider;
