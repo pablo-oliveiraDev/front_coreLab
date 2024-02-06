@@ -69,7 +69,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 });
             } catch (err) {
                 console.log('createUser error :' + err + '\n msg:' + Mensage);
-                console.log(Status)
+                console.log(Status);
                 SetMensage('');
             } finally {
                 setTimeout(function () {
@@ -77,20 +77,21 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 }, 10000);
             }
         }
-
-        return (
-            <StoreNotesContext.Provider
-                value={{
-                    Loading,
-                    Login,
-                    Loged,
-                    Mensage,                    
-                    CreateUser
-                }}
-            >
-                {children}
-            </StoreNotesContext.Provider>
-        );
     };
+
+    return (
+        <StoreNotesContext.Provider
+            value={{
+                Loading,
+                Login,
+                Loged,
+                Mensage,
+                CreateUser
+            }}
+        >
+            {children}
+        </StoreNotesContext.Provider>
+    );
 };
+
 export default StoreNotesProvider;

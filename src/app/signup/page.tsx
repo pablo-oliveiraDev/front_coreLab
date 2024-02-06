@@ -1,6 +1,6 @@
 'use client';
 import React, { useContext, useState } from 'react';
-import styles from '@/assets/styles/pages/login.module.sass';
+import styles from '@/assets/styles/pages/createUser.module.sass';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 import * as T from '@/components/Types/contextTypes';
 import LoadingPage from '@/components/Loading/loading';
