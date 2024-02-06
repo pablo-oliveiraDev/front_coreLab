@@ -9,6 +9,13 @@ export type InitialValue = {
     Login: (email: string, password: string) => void;
     Loged: boolean;
     Mensage: string;
+    CreateUser: (
+        userName: string,
+        email: string,
+        password: string,
+        imgUser: string
+    ) => void;
+    
 };
 type UserImages = {
     id?: string;
