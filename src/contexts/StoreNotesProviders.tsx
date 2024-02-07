@@ -53,20 +53,25 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
         userName: string,
         email: string,
         password: string,
-        userImage: string
+        imgUser: File | null
     ) => {
         if (userName && email && password) {
             let data = {
                 userName: userName,
                 email: email,
                 password: password,
-                userImage: userImage
+                imgUser: imgUser
             };
             try {
                 SetLoading(true);
-                await Api.post('/createUser', data).then(res => {
+                await Api.post('/createUser', data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(res => {
                     SetStatus(res.status);
                     SetMensage(res.data.msg);
+                    console.log(Mensage ,Status)
                 });
             } catch (err) {
                 console.log('createUser error :' + err + '\n msg:' + Mensage);

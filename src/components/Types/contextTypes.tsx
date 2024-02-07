@@ -13,7 +13,7 @@ export type InitialValue = {
         userName: string,
         email: string,
         password: string,
-        imgUser: string
+        imgUser: File | null
     ) => void;
     
 };

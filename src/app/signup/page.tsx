@@ -5,14 +5,20 @@ import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 import * as T from '@/components/Types/contextTypes';
 import LoadingPage from '@/components/Loading/loading';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 export default function Signup() {
-    const { Loading, CreateUser }: T.InitialValue =
+    const { Loading, CreateUser,Mensage }: T.InitialValue =
         useContext(StoreNotesContext);
     const [UserName, SetUserName] = useState<string>('');
     const [Email, SetEmail] = useState<string>('');
     const [Password, SetPassword] = useState<string>('');
-    const [UserImage, SetUserImage] = useState<string>('');
+    const [ImgUser, SetImgUser] = useState<File | null>(null);
+    const handleCreateUser= (e: React.MouseEvent<HTMLButtonElement>) =>{
+        e.preventDefault();
+        CreateUser(UserName, Email, Password, ImgUser);
+        toast.success(Mensage.toString());
+    }
     return (
         <div className={styles.container}>
             {Loading && <LoadingPage />}
@@ -32,7 +38,7 @@ export default function Signup() {
                         SetUserName(e.target.value)
                     }
                 />
-
+                
                 <label htmlFor="email">Email</label>
                 <input
                     type="email"
@@ -55,16 +61,15 @@ export default function Signup() {
                 />
                 <label htmlFor="UserImage">Image</label>
                 <input
-                    type="file"
-                    placeholder="image"
-                    id="UserImage"
-                    value={UserImage}
+                    type="file"                                     
+                    id="UserImage"                    
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        SetUserImage(e.target.value)
+                        SetImgUser(e.target.files ? e.target.files[0] : null)
                     }
                 />
 
-                <button className={styles.btnLogin}>Create</button>
+                <button className={styles.btnLogin}
+                onClick={handleCreateUser}>Create</button>
                 <div className={styles.social}>
                     <span>Back to login? </span>
                     <Link href="/">click here </Link>
