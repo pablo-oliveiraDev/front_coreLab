@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as T from '@/components/Types/contextTypes';
 import Api from '@/components/Services/api';
+import { toast } from 'react-toastify';
 
 export const StoreNotesContext = createContext<T.InitialValue>(
     {} as T.InitialValue
@@ -12,8 +13,8 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [Loading, SetLoading] = useState<boolean>(false);
     const [User, SetUser] = useState<T.UserProps>({} as T.UserProps);
     const [Loged, SetLoged] = useState<boolean>(false);
-    const [Status, SetStatus] = useState<number>();
-    const [Mensage, SetMensage] = useState<string>('');
+    const [Status, SetStatus] = useState<number | null>(null);
+    const [Mensage, SetMensage] = useState<string | null>('');
     const router = useRouter();
 
     async function Login(email: string, password: string) {
@@ -71,20 +72,22 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 }).then(res => {
                     SetStatus(res.status);
                     SetMensage(res.data.msg);
-                    console.log(Mensage ,Status)
+                    console.log(Mensage);
                 });
             } catch (err) {
                 console.log('createUser error :' + err + '\n msg:' + Mensage);
                 console.log(Status);
                 SetMensage('');
             } finally {
+                SetStatus(null);
+                SetMensage('');
                 setTimeout(function () {
                     SetLoading(false);
                 }, 10000);
             }
         }
     };
-
+    console.log(User);
     return (
         <StoreNotesContext.Provider
             value={{
@@ -92,7 +95,9 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 Login,
                 Loged,
                 Mensage,
-                CreateUser
+                Status,
+                CreateUser,
+                User
             }}
         >
             {children}

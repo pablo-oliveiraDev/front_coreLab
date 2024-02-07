@@ -8,17 +8,25 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 
 export default function Signup() {
-    const { Loading, CreateUser,Mensage }: T.InitialValue =
+    const { Loading, CreateUser, Mensage, Status }: T.InitialValue =
         useContext(StoreNotesContext);
     const [UserName, SetUserName] = useState<string>('');
     const [Email, SetEmail] = useState<string>('');
     const [Password, SetPassword] = useState<string>('');
     const [ImgUser, SetImgUser] = useState<File | null>(null);
-    const handleCreateUser= (e: React.MouseEvent<HTMLButtonElement>) =>{
+    const handleCreateUser = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         CreateUser(UserName, Email, Password, ImgUser);
-        toast.success(Mensage.toString());
-    }
+        if (Status === 201) {
+            toast.success(Mensage);
+        } else {
+            toast.error('Erro no cadastro! Verifique os dados informado');
+        }
+        SetUserName('');
+        SetEmail('');
+        SetPassword('');
+        SetImgUser(null);
+    };
     return (
         <div className={styles.container}>
             {Loading && <LoadingPage />}
@@ -38,7 +46,6 @@ export default function Signup() {
                         SetUserName(e.target.value)
                     }
                 />
-                
                 <label htmlFor="email">Email</label>
                 <input
                     type="email"
@@ -61,15 +68,16 @@ export default function Signup() {
                 />
                 <label htmlFor="UserImage">Image</label>
                 <input
-                    type="file"                                     
-                    id="UserImage"                    
+                    type="file"
+                    id="UserImage"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         SetImgUser(e.target.files ? e.target.files[0] : null)
                     }
                 />
 
-                <button className={styles.btnLogin}
-                onClick={handleCreateUser}>Create</button>
+                <button className={styles.btnLogin} onClick={handleCreateUser}>
+                    Create
+                </button>
                 <div className={styles.social}>
                     <span>Back to login? </span>
                     <Link href="/">click here </Link>

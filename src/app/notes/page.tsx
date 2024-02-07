@@ -14,9 +14,9 @@ import { useRouter } from 'next/navigation';
 export default function Notes() {
     const { Loged }: T.InitialValue = useContext(StoreNotesContext);
     const router = useRouter();
-    if (!Loged) {
-      router.push('/');
-    }
+    // if (!Loged) {
+    //   router.push('/');
+    // }
    
     return (
         <div className={styles.container}>
