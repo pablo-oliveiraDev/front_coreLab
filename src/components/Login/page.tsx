@@ -7,12 +7,14 @@ import { useContext, useState } from 'react';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 
 export default function UsrLogin() {
-    const { Login, Loading }: T.InitialValue = useContext(StoreNotesContext);
+    const { Login, Loading, SetLoged,SetTrigger,Trigger }: T.InitialValue =
+        useContext(StoreNotesContext);
     const [email, SetEmail] = useState<string>('');
     const [password, SetPassword] = useState<string>('');
 
     const SaveBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        SetTrigger(!Trigger)
         Login(email, password);
         SetEmail('');
         SetPassword('');

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 export type UserContextProps = {
     children: ReactNode;
@@ -10,20 +10,30 @@ export type InitialValue = {
     Loged: boolean;
     Mensage: string | null;
     CreateUser: (
-        userName: string ,
-        email: string ,
+        userName: string,
+        email: string,
         password: string,
         imgUser: File | null
-    ) => (void);
+    ) => void;
     Status: number | null;
-    User:UserProps
+    User: UserProps | null;
+    Logout: () => void;
+    SetLoged: Dispatch<SetStateAction<boolean>>;
+    Trigger: boolean;
+    SetTrigger: Dispatch<SetStateAction<boolean>>;
+    CreateTask: (
+        id: string,
+        userId: string,
+        titulo: string,
+        task: string,
+    ) => void;
 };
 type UserImages = {
     id?: string | null;
-    image: string ;
+    image: string;
     userId?: string | null;
 };
-export type UserProps= {
+export type UserProps = {
     msg?: string;
     id?: string;
     userName?: string;
@@ -31,4 +41,10 @@ export type UserProps= {
     password?: string;
     createdAt?: string;
     userImages: UserImages[];
-}
+};
+export type TaskProps = {
+    id: string;
+    userId: string;
+    titulo: string;
+    task: string;
+};

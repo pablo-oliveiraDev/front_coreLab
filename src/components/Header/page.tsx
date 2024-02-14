@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 
 const Header = () => {
-    const { User }: T.InitialValue = useContext(StoreNotesContext);
+    const { User,Logout }: T.InitialValue = useContext(StoreNotesContext);
     let textImageUrl: string = 'data:image/png;base64,';
 
     return (
@@ -25,16 +25,13 @@ const Header = () => {
                         alt="search icon"
                     />
                 </li>
-
                 <li>
-                    <Image
-                        alt="User image"
-                        className={styles.imageUser}
-                        src={textImageUrl + User.userImages[0].image}
-                        width={40}
-                        height={40}
-                    />
-                    <IoMdClose />
+                    <FaRegUserCircle />
+                    <button className={styles.BtnLogout}
+                    onClick={Logout}
+                    >
+                        <IoMdClose />
+                    </button>
                 </li>
             </ul>
         </div>
