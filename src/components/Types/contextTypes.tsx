@@ -21,30 +21,24 @@ export type InitialValue = {
     SetLoged: Dispatch<SetStateAction<boolean>>;
     Trigger: boolean;
     SetTrigger: Dispatch<SetStateAction<boolean>>;
-    CreateTask: (
-        id: string,
-        userId: string,
-        titulo: string,
-        task: string,
-    ) => void;
+    CreateTask: (userId: string , titulo: string, task: string) => void;
 };
 type UserImages = {
-    id?: string | null;
+    id: string | null;
     image: string;
-    userId?: string | null;
+    userId: string | null;
 };
 export type UserProps = {
-    msg?: string;
-    id?: string;
-    userName?: string;
-    email?: string;
-    password?: string;
+    msg: string;
+    id: string;
+    userName: string;
+    email: string;
+    password: string;
     createdAt?: string;
     userImages: UserImages[];
 };
 export type TaskProps = {
-    id: string;
-    userId: string;
+    userId: string | null;
     titulo: string;
     task: string;
 };

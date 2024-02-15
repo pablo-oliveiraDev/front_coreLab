@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import TaskCards from '@/components/TaskCards/page';
 import TaskCardsOut from '@/components/TaskCards/outras';
 import styles from '@/assets/styles/pages/home.module.sass';
@@ -13,10 +13,20 @@ import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 import { useRouter } from 'next/navigation';
 
 export default function Notes() {
-    const { Loged, User, Loading }: T.InitialValue =
+    const [Titulo, SetTitulo] = useState<string>('');
+    const [Task, SetTask] = useState<string>('');
+    const { Loged, User, Loading, CreateTask }: T.InitialValue =
         useContext(StoreNotesContext);
-    const router = useRouter();   
-
+    
+   
+    const router = useRouter();
+    console.log(User?.userImages[0].image);
+    const AddNewTask = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if (User !== null || User !== undefined) {
+            //CreateTask(newUser, Titulo, Task);
+        }
+    };
     if (!Loged) {
         router.push('/');
     } else {
@@ -31,15 +41,29 @@ export default function Notes() {
                             id="title"
                             type="text"
                             placeholder="titulo da tarefa"
+                            value={Titulo}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => SetTitulo(e.target.value)}
                         />
                     </span>
                     <hr />
                     <span>
                         Tarefa:
-                        <input type="text" placeholder="digite aqui a nota" />
+                        <input
+                            id="Task"
+                            type="text"
+                            placeholder="digite aqui a nota"
+                            value={Task}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => SetTask(e.target.value)}
+                        />
                     </span>
 
-                    <button className={styles.btnAddTask}>Adicionar</button>
+                    <button className={styles.btnAddTask} onClick={AddNewTask}>
+                        Adicionar
+                    </button>
                 </div>
                 <div className={styles.favoritos}>
                     <span>Favoritas</span>
@@ -59,7 +83,7 @@ export default function Notes() {
                             src={Bucket}
                             alt="icon star"
                         />
-                    </TaskCardsOut >
+                    </TaskCardsOut>
                 </div>
             </div>
         );

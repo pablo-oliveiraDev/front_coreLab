@@ -20,9 +20,7 @@ const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
         (e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             i > index.length - 1 ? (i = 0) : i;
-            let element = document.getElementsByClassName(styles[index[i]])[
-                elementNumber
-            ];
+            let element = document.getElementById('TaskCards')
             if (index[1] !== null || index[i] !== undefined) {
                 i++;
                 index.map(val => element?.classList.remove(styles[val]));

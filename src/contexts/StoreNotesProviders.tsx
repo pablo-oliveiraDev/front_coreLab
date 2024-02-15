@@ -11,15 +11,14 @@ export const StoreNotesContext = createContext<T.InitialValue>(
 
 export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [Loading, SetLoading] = useState<boolean>(false);
-    const [User, SetUser] = useState<T.UserProps | null>(
-        {} as T.UserProps | null
-    );
+    const [User, SetUser] = useState<any>(null);
     const [Loged, SetLoged] = useState<boolean>(false);
     const [Status, SetStatus] = useState<number | null>(null);
     const [Mensage, SetMensage] = useState<string | null>(null);
     const [Trigger, SetTrigger] = useState<boolean>(false);
     const router = useRouter();
-    const HandleSetStorage = async (item: T.UserProps | null) => {
+    let userId: string | null;
+    const HandleSetStorage = async (item: T.UserProps) => {
         if (item) {
             window.localStorage.setItem('User', JSON.stringify(item));
         }
@@ -34,16 +33,17 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
         }
         LoadStorage();
     }, []);
+
     async function Login(email: string, password: string) {
         let NewData = {
             email: email,
             password: password
         };
-        let userImage: any;
+
         try {
             SetLoading(true);
             await Api.post('/login', NewData).then(res => {
-                HandleSetStorage(res.data);
+                HandleSetStorage(res.data.login);
                 SetStatus(res.status);
                 SetMensage(res.data.msg);
                 SetLoged(true);
@@ -57,7 +57,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             }, 4000);
         }
     }
-    if (Status === 200 || !!User?.msg) {
+    if (Status === 200 || !!User) {
         router.push('/notes', { scroll: false });
     }
 
@@ -104,26 +104,26 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             }
         }
     };
+    console.log(User?.userName);
     const CreateTask = async (
-        id: string,
-        userId: string,
+        userId: string | null,
         titulo: string,
         task: string
     ) => {
         SetLoading(true);
-        let data: T.TaskProps = {
-            id: id,
+        let taskData: T.TaskProps = {
             userId: userId,
             titulo: titulo,
             task: task
         };
 
-        if (!!data) {
+        if (!!taskData) {
             try {
-                await Api.post('/createTask', data).then(res => {
+                await Api.post('/createTask', taskData).then(res => {
                     SetStatus(res.status);
                     SetMensage(res.data.msg);
                 });
+                toast.success(`Tarefa Criada com Sucesso!`);
             } catch (err) {
                 SetLoading(false);
                 console.log(err);
@@ -132,7 +132,6 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 setTimeout(function () {
                     SetLoading(false);
                 }, 4000);
-                toast.success(`Tarefa Criada com Sucesso!`);
             }
         }
     };
