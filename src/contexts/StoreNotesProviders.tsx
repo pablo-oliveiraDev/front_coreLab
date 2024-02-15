@@ -16,6 +16,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [Status, SetStatus] = useState<number | null>(null);
     const [Mensage, SetMensage] = useState<string | null>(null);
     const [Trigger, SetTrigger] = useState<boolean>(false);
+    const [DataTasks, SetDataTasks] = useState<any>();
     const router = useRouter();
     let userId: string | null;
     const HandleSetStorage = async (item: T.UserProps) => {
@@ -104,12 +105,8 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             }
         }
     };
-    console.log(User?.userName);
-    const CreateTask = async (
-        userId: string | null,
-        titulo: string,
-        task: string
-    ) => {
+
+    const CreateTask = async (userId: string, titulo: string, task: string) => {
         SetLoading(true);
         let taskData: T.TaskProps = {
             userId: userId,
@@ -135,6 +132,26 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             }
         }
     };
+
+    useEffect(() => {
+        async function getDataTasks() {
+            let taskData: any = {
+                userId: User?.id
+            };
+            if (!!User) {
+                try {
+                    await Api.get('/findTaskByUser', {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(res => {
+                        SetDataTasks(res.data.tasks[0].id);
+                    });
+                } catch (err) {}
+            }
+        }
+        getDataTasks();
+    }, []);
     return (
         <StoreNotesContext.Provider
             value={{
@@ -149,7 +166,8 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 SetLoged,
                 Trigger,
                 SetTrigger,
-                CreateTask
+                CreateTask,
+                DataTasks
             }}
         >
             {children}

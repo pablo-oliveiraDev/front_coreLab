@@ -15,18 +15,18 @@ import { useRouter } from 'next/navigation';
 export default function Notes() {
     const [Titulo, SetTitulo] = useState<string>('');
     const [Task, SetTask] = useState<string>('');
-    const { Loged, User, Loading, CreateTask }: T.InitialValue =
+    const { Loged, User, Loading, CreateTask, DataTasks }: T.InitialValue =
         useContext(StoreNotesContext);
-    
-   
     const router = useRouter();
-    console.log(User?.userImages[0].image);
+
     const AddNewTask = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (User !== null || User !== undefined) {
-            //CreateTask(newUser, Titulo, Task);
+            const useId:string | undefined = User?.id;
+            CreateTask(useId, Titulo, Task);
         }
     };
+    console.log(DataTasks);
     if (!Loged) {
         router.push('/');
     } else {
@@ -77,13 +77,17 @@ export default function Notes() {
                 </div>
                 <div className={styles.outras}>
                     <span>Outras</span>
-                    <TaskCardsOut elementNumber={0}>
-                        <Image
-                            className={styles.bucket}
-                            src={Bucket}
-                            alt="icon star"
-                        />
-                    </TaskCardsOut>
+                    {/* {DataTasks.map((val,index )=> (
+                        <TaskCardsOut elementNumber={0}
+                        key={index}                        
+                        >
+                            <Image
+                                className={styles.bucket}
+                                src={Bucket}
+                                alt="icon star"
+                            />
+                        </TaskCardsOut>
+                    ))} */}
                 </div>
             </div>
         );

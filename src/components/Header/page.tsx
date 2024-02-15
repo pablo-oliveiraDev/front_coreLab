@@ -9,8 +9,8 @@ import Image from 'next/image';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 
 const Header = () => {
-    const { User,Logout }: T.InitialValue = useContext(StoreNotesContext);
-    let textImageUrl: string = 'data:image/png;base64,';
+    const { User, Logout }: T.InitialValue = useContext(StoreNotesContext);
+    let textImageUrl: string = 'data:image/jpg;base64,';
 
     return (
         <div className={styles.container}>
@@ -26,10 +26,20 @@ const Header = () => {
                     />
                 </li>
                 <li>
-                    <FaRegUserCircle />
-                    <button className={styles.BtnLogout}
-                    onClick={Logout}
-                    >
+                    {!!User?.userImages[0].image ? (
+                        <Image
+                            className={styles.imgUser}
+                            loading='lazy'
+                            alt="img user"
+                            src={textImageUrl + User.userImages[0].image}
+                            width={32}
+                            height={32}
+                            
+                        />
+                    ) : (
+                        <FaRegUserCircle />
+                    )}
+                    <button className={styles.BtnLogout} onClick={Logout}>
                         <IoMdClose />
                     </button>
                 </li>

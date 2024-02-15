@@ -21,7 +21,9 @@ export type InitialValue = {
     SetLoged: Dispatch<SetStateAction<boolean>>;
     Trigger: boolean;
     SetTrigger: Dispatch<SetStateAction<boolean>>;
-    CreateTask: (userId: string , titulo: string, task: string) => void;
+    CreateTask: (userId: any, titulo: string, task: string) => void;
+    DataTasks: TaskProps[];
+   
 };
 type UserImages = {
     id: string | null;
@@ -38,7 +40,7 @@ export type UserProps = {
     userImages: UserImages[];
 };
 export type TaskProps = {
-    userId: string | null;
+    userId: string | undefined;
     titulo: string;
     task: string;
 };
