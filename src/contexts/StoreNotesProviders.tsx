@@ -138,20 +138,15 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             let taskData: any = {
                 userId: User?.id
             };
-            if (!!User) {
-                try {
-                    await Api.get('/findTaskByUser', {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }).then(res => {
-                        SetDataTasks(res.data.tasks[0].id);
-                    });
-                } catch (err) {}
+            if (User !== null && User !== undefined) {
+                await Api.get('/findTaskByUser', taskData).then(res => {
+                    SetDataTasks(res.data.tasks[0]);
+                });
             }
         }
         getDataTasks();
-    }, []);
+    }, [User]);
+    console.log(DataTasks);
     return (
         <StoreNotesContext.Provider
             value={{

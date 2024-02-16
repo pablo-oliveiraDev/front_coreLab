@@ -1,13 +1,15 @@
-import React, { Children, useCallback, useState } from 'react';
+import React, { Children, useCallback, useContext, useState } from 'react';
 import styles from '../../assets/styles/components/taskCards.module.sass';
 import Image from 'next/image';
 import Star from '../../assets/images/svg/star.svg';
 import Pencil from '../../assets/images/svg/pencil.svg';
+import * as T from '@/components/Types/contextTypes';
 
 import { IoMdClose } from 'react-icons/io';
+import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 
 const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
-    const [Color, SetColor] = useState<string>('container');
+    const { DataTasks }: T.InitialValue = useContext(StoreNotesContext);
     let i: number = 0;
     let index: string[] = [
         'container',
@@ -37,25 +39,33 @@ const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
 
     return (
         <div className={styles.container} id="TaskCards2">
-            <section className={styles.boxTitle}>
-                <input type="text" placeholder="Titulo" />
-                <Image src={Star} alt="icon star" />
-            </section>
-            <hr className={styles.line} />
-            <section className={styles.boxTask}>
-                <textarea
-                    name="tasksTxt"
-                    className={styles.tasksTxt}
-                    cols={30}
-                    rows={15}
-                    placeholder="digite aqui a nota..."
-                ></textarea>
-            </section>
-            <div className={styles.boxEdits}>
-                <Image className={styles.pencil} src={Pencil} alt="icon star" />
-                <button onClick={themeColor}>{children}</button>
-                <IoMdClose className={styles.closeIcon} />
-            </div>
+            {DataTasks.map((val, index) => (
+                <>
+                    <section className={styles.boxTitle}>
+                        <input type="text" placeholder="Titulo" />
+                        <Image src={Star} alt="icon star" />
+                    </section>
+                    <hr className={styles.line} />
+                    <section className={styles.boxTask}>
+                        <textarea
+                            name="tasksTxt"
+                            className={styles.tasksTxt}
+                            cols={30}
+                            rows={15}
+                            placeholder="digite aqui a nota..."
+                        ></textarea>
+                    </section>
+                    <div className={styles.boxEdits}>
+                        <Image
+                            className={styles.pencil}
+                            src={Pencil}
+                            alt="icon star"
+                        />
+                        <button onClick={themeColor}>{children}</button>
+                        <IoMdClose className={styles.closeIcon} />
+                    </div>
+                </>
+            ))}
         </div>
     );
 };
