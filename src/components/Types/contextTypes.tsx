@@ -16,7 +16,7 @@ export type InitialValue = {
         imgUser: File | null
     ) => void;
     Status: number | null;
-    User: UserProps | null;
+    User: UserProps[] | null;
     Logout: () => void;
     SetLoged: Dispatch<SetStateAction<boolean>>;
     Trigger: boolean;
@@ -29,7 +29,7 @@ type UserImages = {
     image: string;
     userId: string | null;
 };
-export type UserProps = {
+export interface UserProps {
     msg: string;
     id: string;
     userName: string;

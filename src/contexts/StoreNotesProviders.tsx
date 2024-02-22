@@ -132,21 +132,21 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             }
         }
     };
-
-    useEffect(() => {
-        async function getDataTasks() {
-            let taskData: any = {
-                userId: '65c37506e04f5ed2a9f9a491'
-            };
-            if (!!User) {
-                await Api.get('/findTaskByUser', taskData).then(res => {
-                    SetDataTasks(res.data.tasks);
-                });
+    const handleTaskByUser = () => {
+        useEffect(() => {
+            async function LoadTaskByUser() {
+                if (!!User) {
+                    let userId = User?.id;
+                    await Api.post('/findTaskByUser', userId).then(res => {
+                        SetDataTasks(JSON.parse(res.data.tasks));
+                    });
+                }
             }
-        }
-        getDataTasks();
-    }, [User]);
-    console.log(DataTasks);
+            LoadTaskByUser();
+        }, [User])
+    };
+
+    console.log('dataTask:' + DataTasks);
     return (
         <StoreNotesContext.Provider
             value={{

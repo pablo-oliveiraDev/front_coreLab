@@ -1,3 +1,4 @@
+'use client'
 import React, { Children, useCallback, useContext, useState } from 'react';
 import styles from '../../assets/styles/components/taskCards.module.sass';
 import Image from 'next/image';
@@ -7,6 +8,7 @@ import * as T from '@/components/Types/contextTypes';
 
 import { IoMdClose } from 'react-icons/io';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
+import { Value } from 'sass';
 
 const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
     const { DataTasks }: T.InitialValue = useContext(StoreNotesContext);
@@ -46,6 +48,7 @@ const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
                             type="text"
                             placeholder="Titulo"
                             value={val?.titulo}
+                            //onChange={''}
                         />
                         <Image src={Star} alt="icon star" />
                     </section>
