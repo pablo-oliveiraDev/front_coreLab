@@ -18,7 +18,7 @@ const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
         'containerYellow',
         'containerGreen'
     ];
-
+    console.log(DataTasks);
     const themeColor = useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
@@ -38,11 +38,15 @@ const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
     );
 
     return (
-        <div className={styles.container} id="TaskCards2">
-            {DataTasks.map((val, index) => (
-                <>
-                    <section className={styles.boxTitle}>
-                        <input type="text" placeholder="Titulo" />
+        <>
+            {Object.values(DataTasks).map((val, index) => (
+                <div className={styles.container} id="TaskCards2">
+                    <section className={styles.boxTitle} key={index}>
+                        <input
+                            type="text"
+                            placeholder="Titulo"
+                            value={val?.titulo}
+                        />
                         <Image src={Star} alt="icon star" />
                     </section>
                     <hr className={styles.line} />
@@ -52,6 +56,7 @@ const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
                             className={styles.tasksTxt}
                             cols={30}
                             rows={15}
+                            value={val?.task}
                             placeholder="digite aqui a nota..."
                         ></textarea>
                     </section>
@@ -62,11 +67,12 @@ const TaskCards = ({ Task, Title, elementNumber, children }: any) => {
                             alt="icon star"
                         />
                         <button onClick={themeColor}>{children}</button>
+                        <span>Data: {val?.createdAt}</span>
                         <IoMdClose className={styles.closeIcon} />
                     </div>
-                </>
+                </div>
             ))}
-        </div>
+        </>
     );
 };
 

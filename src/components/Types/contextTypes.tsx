@@ -22,8 +22,7 @@ export type InitialValue = {
     Trigger: boolean;
     SetTrigger: Dispatch<SetStateAction<boolean>>;
     CreateTask: (userId: any, titulo: string, task: string) => void;
-    DataTasks: TaskProps[];
-   
+    DataTasks:DataTask[] ;
 };
 type UserImages = {
     id: string | null;
@@ -39,8 +38,17 @@ export type UserProps = {
     createdAt?: string;
     userImages: UserImages[];
 };
-export type TaskProps = {
+export interface TaskProps {
     userId: string | undefined;
     titulo: string;
     task: string;
-};
+}
+export interface DataTask {
+    completedAt: string |null;
+    createdAt: string;
+    id: string;
+    task: string;
+    titulo: string;
+    updatedAt:string| null;
+    userId: string;
+}

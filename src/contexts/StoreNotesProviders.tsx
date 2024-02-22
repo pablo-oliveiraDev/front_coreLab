@@ -16,7 +16,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [Status, SetStatus] = useState<number | null>(null);
     const [Mensage, SetMensage] = useState<string | null>(null);
     const [Trigger, SetTrigger] = useState<boolean>(false);
-    const [DataTasks, SetDataTasks] = useState<any>();
+    const [DataTasks, SetDataTasks] = useState<T.DataTask[]>([]);
     const router = useRouter();
     let userId: string | null;
     const HandleSetStorage = async (item: T.UserProps) => {
@@ -136,11 +136,11 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     useEffect(() => {
         async function getDataTasks() {
             let taskData: any = {
-                userId: User?.id
+                userId: '65c37506e04f5ed2a9f9a491'
             };
-            if (User !== null && User !== undefined) {
+            if (!!User) {
                 await Api.get('/findTaskByUser', taskData).then(res => {
-                    SetDataTasks(res.data.tasks[0]);
+                    SetDataTasks(res.data.tasks);
                 });
             }
         }
