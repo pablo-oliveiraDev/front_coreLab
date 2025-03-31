@@ -11,16 +11,17 @@ export const StoreNotesContext = createContext<T.InitialValue>(
 
 export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
     const [Loading, SetLoading] = useState<boolean>(false);
-    const [User, SetUser] = useState<any>(null);
+    const [user, setUser] = useState<T.UserProps | null>(null);
     const [Loged, SetLoged] = useState<boolean>(false);
     const [Status, SetStatus] = useState<number | null>(null);
     const [Mensage, SetMensage] = useState<string | null>(null);
+    const [token, setToken] = useState<string | null>(null);
     const [Trigger, SetTrigger] = useState<boolean>(false);
     const [DataTasks, SetDataTasks] = useState<T.DataTask[]>([]);
     const router = useRouter();
     let userId: string | null;
-    const HandleSetStorage = async (item: T.UserProps) => {
-        if (item) {
+    const HandleSetStorage = async (item: string) => {
+        if (!!item || item.trim() !== '') {
             window.localStorage.setItem('User', JSON.stringify(item));
         }
     };
@@ -28,96 +29,116 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
         function LoadStorage() {
             const storageUser = window.localStorage.getItem('User');
             if (storageUser !== null && storageUser !== undefined) {
-                SetUser(JSON.parse(storageUser));
+                const dataParse = JSON.parse(storageUser);
+                setUser(dataParse.user);
+                setToken(dataParse.token);
+                console.log('user :' + dataParse.user.nomeUser);
                 SetLoged(true);
             }
         }
         LoadStorage();
-    }, []);
+    }, [setToken]);
 
-    async function Login(email: string, password: string) {
+    async function Login(email: string, senha: string) {
         let NewData = {
             email: email,
-            password: password
+            senha: senha
         };
 
         try {
             SetLoading(true);
             await Api.post('/login', NewData).then(res => {
-                HandleSetStorage(res.data.login);
-                SetStatus(res.status);
-                SetMensage(res.data.msg);
+                HandleSetStorage(res.data);
+                SetStatus(Number(res.status));
+                SetMensage(res.data.message);
                 SetLoged(true);
+                console.log('status:' + Number(res.status));
             });
         } catch (error: any) {
-            console.log('login error: ' + error + 'msg :' + User?.msg);
-            SetUser(null);
+            console.log('login error: ' + error + 'msg :' + user?.msg);
+            SetMensage(error.toString());
         } finally {
-            setTimeout(function () {
+            await setTimeout(function () {
                 SetLoading(false);
-            }, 4000);
+            }, 4500);
+            router.push('/notes', { scroll: false })!;
         }
     }
-    if (Status === 200 || !!User) {
+    if (Status === 200 || !!token) {
         router.push('/notes', { scroll: false });
     }
 
     const Logout = async () => {
-        SetLoged(false);
-        SetUser(null);
-        window.localStorage.removeItem('User');
-        router.push('/');
+        try {
+            SetLoged(true);
+            window.localStorage.removeItem('User');
+            router.push('/')!;
+        } catch (err) {
+        } finally {
+            setUser(null);
+            SetLoged(false);
+            SetMensage(null);
+        }
     };
 
     const CreateUser = async (
         userName: string,
         email: string,
-        password: string,
-        imgUser: File | null
+        password: string
     ) => {
         if (userName && email && password) {
             let data = {
-                userName: userName,
+                nomeUser: userName,
                 email: email,
-                password: password,
-                imgUser: imgUser
+                senha: password
             };
             try {
                 SetLoading(true);
-                await Api.post('/createUser', data, {
+                await Api.post('/users', data, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
                     }
                 }).then(res => {
-                    SetStatus(res.status);
-                    SetMensage(res.data.msg);
+                    SetStatus(res.data.status);
+                    SetMensage(res.data.message);
                 });
             } catch (err) {
                 console.log('createUser error :' + err + '\n msg:' + Mensage);
                 console.log(Status);
-                SetMensage('');
+                SetMensage(Mensage);
             } finally {
                 SetStatus(null);
                 SetMensage('');
                 setTimeout(function () {
                     SetLoading(false);
                 }, 4000);
+
+                Login(email, password)!;
             }
         }
     };
 
-    const CreateTask = async (userId: string, titulo: string, task: string) => {
+    const CreateTask = async (
+        titulo: string,
+        task: string,
+        status: string,
+        user_id: number,
+        categoria_id: number
+    ): Promise<void> => {
         SetLoading(true);
         let taskData: T.TaskProps = {
-            userId: userId,
             titulo: titulo,
-            task: task
+            descricao: task,
+            status: status,
+            user_id: user_id,
+            categoria_id: categoria_id
         };
 
         if (!!taskData) {
             try {
-                await Api.post('/createTask', taskData).then(res => {
-                    SetStatus(res.status);
+                await Api.post('/tasks', taskData).then(res => {
+                    SetStatus(Number(res.data.status));
                     SetMensage(res.data.msg);
                 });
                 toast.success(`Tarefa Criada com Sucesso!`);
@@ -132,21 +153,7 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
             }
         }
     };
-    const handleTaskByUser = () => {
-        useEffect(() => {
-            async function LoadTaskByUser() {
-                if (!!User) {
-                    let userId = User?.id;
-                    await Api.post('/findTaskByUser', userId).then(res => {
-                        SetDataTasks(JSON.parse(res.data.tasks));
-                    });
-                }
-            }
-            LoadTaskByUser();
-        }, [User])
-    };
 
-    console.log('dataTask:' + DataTasks);
     return (
         <StoreNotesContext.Provider
             value={{
@@ -155,10 +162,12 @@ export const StoreNotesProvider = ({ children }: T.UserContextProps) => {
                 Loged,
                 Mensage,
                 Status,
+                token,
                 CreateUser,
-                User,
+                user,
                 Logout,
                 SetLoged,
+                SetLoading,
                 Trigger,
                 SetTrigger,
                 CreateTask,

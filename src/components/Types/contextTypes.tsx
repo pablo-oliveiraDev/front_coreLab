@@ -6,23 +6,26 @@ export type UserContextProps = {
 
 export type InitialValue = {
     Loading: boolean;
-    Login: (email: string, password: string) => void;
+    Login: (email: string, senha: string) => void;
     Loged: boolean;
     Mensage: string | null;
-    CreateUser: (
-        userName: string,
-        email: string,
-        password: string,
-        imgUser: File | null
-    ) => void;
+    token: string | null;
+    CreateUser: (nomeUser: string, email: string, senha: string) => void;
     Status: number | null;
-    User: UserProps[] | null;
+    user: UserProps | null;
     Logout: () => void;
     SetLoged: Dispatch<SetStateAction<boolean>>;
+    SetLoading: Dispatch<SetStateAction<boolean>>;
     Trigger: boolean;
     SetTrigger: Dispatch<SetStateAction<boolean>>;
-    CreateTask: (userId: any, titulo: string, task: string) => void;
-    DataTasks:DataTask[] ;
+    CreateTask: (
+        titulo: string,
+        task: string,
+        status: string,
+        user_id: number,
+        categoria_id: number
+    ) => Promise<void>;
+    DataTasks: DataTask[];
 };
 type UserImages = {
     id: string | null;
@@ -30,25 +33,34 @@ type UserImages = {
     userId: string | null;
 };
 export interface UserProps {
+    id?: string;
+    token?: string;
     msg: string;
-    id: string;
-    userName: string;
+    nomeUser: string;
     email: string;
-    password: string;
+    senha: string;
     createdAt?: string;
-    userImages: UserImages[];
-};
+}
 export interface TaskProps {
-    userId: string | undefined;
+    id?: number;
     titulo: string;
-    task: string;
+    descricao: string;
+    status: string;
+    user_id?: number;
+    categoria_id?: number;
 }
 export interface DataTask {
-    completedAt: string |null;
-    createdAt: string;
+    completedAt?: string | null;
+    createdAt?: string;
     id: string;
     task: string;
     titulo: string;
-    updatedAt:string| null;
+    nome_categoria: string;
+    status: string;
+    updatedAt?: string | null;
     userId: string;
 }
+
+export type collors = {
+    setCollors: Dispatch<SetStateAction<number>>;
+};

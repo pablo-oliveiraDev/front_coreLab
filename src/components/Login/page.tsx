@@ -3,23 +3,34 @@ import styles from '@/assets/styles/pages/login.module.sass';
 import LoadingPage from '@/components/Loading/loading';
 import Link from 'next/link';
 import * as T from '@/components/Types/contextTypes';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
+import {ResStatusCode} from '@/functions/functions';
 
 export default function UsrLogin() {
-    const { Login, Loading, SetLoged,SetTrigger,Trigger }: T.InitialValue =
-        useContext(StoreNotesContext);
+    const {
+        Login,
+        Loading,
+        SetLoged,
+        SetTrigger,
+        Trigger,
+        Status,
+        Mensage,
+    }: T.InitialValue = useContext(StoreNotesContext);
     const [email, SetEmail] = useState<string>('');
-    const [password, SetPassword] = useState<string>('');
+    const [senha, SetSenha] = useState<string>('');
 
     const SaveBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        SetTrigger(!Trigger)
-        Login(email, password);
-        SetEmail('');
-        SetPassword('');
+        SetTrigger(!Trigger);
+        Login(email, senha);
+        
+        // SetEmail('');
+        // SetPassword('');
     };
-
+    useEffect(()=>{
+        ResStatusCode(Status!, Mensage!);
+    },[Mensage,Status])
     return (
         <div className={styles.container}>
             {Loading && <LoadingPage />}
@@ -42,12 +53,12 @@ export default function UsrLogin() {
 
                 <label htmlFor="password">Password</label>
                 <input
-                    type="password"
+                    type="text"
                     placeholder="Password"
                     id="password"
-                    value={password}
+                    value={senha}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        SetPassword(e.target.value)
+                        SetSenha(e.target.value)
                     }
                 />
 

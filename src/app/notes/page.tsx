@@ -1,63 +1,78 @@
 'use client';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import TaskCards from '@/components/TaskCards/page';
 import TaskCardsOut from '@/components/TaskCards/outras';
 import styles from '@/assets/styles/pages/home.module.sass';
 import * as T from '@/components/Types/contextTypes';
+import Star from '@/assets/images/svg/star.svg';
 import Header from '@/components/Header/page';
 import LoadingPage from '@/components/Loading/loading';
 import Bucket from '@/assets/images/svg/bucket.svg';
 import Image from 'next/image';
+import Api from '@/components/Services/api';
 import { Metadata } from 'next';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 import { useRouter } from 'next/navigation';
 
 export default function Notes() {
-    const [Titulo, SetTitulo] = useState<string>('');
-    const [Task, SetTask] = useState<string>('');
-    const { Loged, User, Loading, CreateTask}: T.InitialValue =
+    const [titulo, setTitulo] = useState<string>('');
+    const [descricao, setDescricao] = useState<string>('');
+    const [status, setStatus] = useState<string>('');
+    const [userId, setUserId] = useState<number>(0);
+    const [categoriaId, setCategoriaId] = useState<number>(0);
+    const { Loged, user, Loading, token, CreateTask }: T.InitialValue =
         useContext(StoreNotesContext);
+    const [DataTasks, SetDataTasks] = useState<T.DataTask[]>([]);
     const router = useRouter();
 
     const AddNewTask = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        if (User !== null || User !== undefined) {
-            const useId: string | undefined = User?.id;
-            CreateTask(useId, Titulo, Task);
+        if (user !== null || user !== undefined) {
+            CreateTask(titulo, descricao, status, userId, categoriaId);
         }
     };
-    
+    console.log(token);
+    useEffect(() => {
+        async function LoadTaskByUser() {
+            await Api.get(`/tasks?page=2`).then(res => {
+                const data: any = res.data;
+                SetDataTasks(data.data);
+            });
+        }
+        LoadTaskByUser();
+    }, [DataTasks]);
+    console.log('dataTask:' + JSON.stringify(DataTasks[1]));
     if (!Loged) {
-        router.push('/');
+        router.push('/')!;
     } else {
         return (
             <div className={styles.container}>
                 <Header />
                 <div className={styles.containerAddTask}>
                     {Loading && <LoadingPage />}
-                    <span>
-                        Titulo:
+                    <span className={styles.titulo}>
                         <input
                             id="title"
                             type="text"
-                            placeholder="titulo da tarefa"
-                            value={Titulo}
+                            placeholder="Titulo"
+                            value={titulo}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
-                            ) => SetTitulo(e.target.value)}
+                            ) => setTitulo(e.target.value)}
                         />
+                        <button className={styles.btn_favoritos} disabled>
+                            <Image src={Star} alt="star" />
+                        </button>
                     </span>
-                    <hr />
-                    <span>
-                        Tarefa:
+                    <span className={styles.tarefasDesc}>
                         <input
                             id="Task"
                             type="text"
-                            placeholder="digite aqui a nota"
-                            value={Task}
+                            placeholder="Criar tarefa..."
+                            value={descricao}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
-                            ) => SetTask(e.target.value)}
+                            ) => setDescricao(e.target.value)}
                         />
                     </span>
 
@@ -67,24 +82,43 @@ export default function Notes() {
                 </div>
                 <div className={styles.favoritos}>
                     <span>Favoritas</span>
-                    <TaskCards elementNumber={0}>
-                        <Image
-                            className={styles.bucket}
-                            src={Bucket}
-                            alt="icon star"
-                        />
-                    </TaskCards>
+                    <div className={styles.displayFavoritos}>
+                        {DataTasks ? (
+                            Object.values(DataTasks).map(
+                                (tasks, index) => (
+                                    tasks.nome_categoria === 'favoritos' &&
+                                    (
+                                        <TaskCards
+                                            key={index}
+                                            DataTasks={tasks}
+                                            elementNumber={index}
+                                        />
+                                    )
+                                )
+                            )
+                        ) : (
+                            <h1>Vc ainda nao tem tarefas</h1>
+                        )}
+                    </div>
                 </div>
                 <div className={styles.outras}>
                     <span>Outras</span>
-
-                    <TaskCardsOut elementNumber={0} >
-                        <Image
-                            className={styles.bucket}
-                            src={Bucket}
-                            alt="icon star"
-                        />
-                    </TaskCardsOut>
+                    {DataTasks ? (
+                        Object.values(DataTasks).map(
+                            (tasks, index) => (
+                                tasks.nome_categoria==='outras' &&
+                                (
+                                    <TaskCardsOut
+                                        key={index}
+                                        DataTasks={tasks}
+                                        elementNumber={index}
+                                    />
+                                )
+                            )
+                        )
+                    ) : (
+                        <h1>Vc ainda nao tem tarefas</h1>
+                    )}
                 </div>
             </div>
         );

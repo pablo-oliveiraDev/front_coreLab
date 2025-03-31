@@ -16,7 +16,7 @@ export default function Signup() {
     const [ImgUser, SetImgUser] = useState<File | null>(null);
     const handleCreateUser = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        CreateUser(UserName, Email, Password, ImgUser);
+        CreateUser(UserName, Email, Password);
         if (Status === 201) {
             toast.success(Mensage);
         } else {
