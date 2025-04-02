@@ -2,7 +2,7 @@
 import React, { useContext, useState } from 'react';
 import styles from '@/assets/styles/pages/createUser.module.sass';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
-import * as T from '@/components/Types/contextTypes';
+import * as T from '../../Types/contextTypes';
 import LoadingPage from '@/components/Loading/loading';
 import Link from 'next/link';
 import { toast } from 'react-toastify';

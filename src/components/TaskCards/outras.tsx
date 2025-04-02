@@ -11,9 +11,8 @@ const TaskCardOut = ({ DataTasks, elementNumber, children }: any) => {
     const [style, setStyle] = useState<string>('');
     const [titulo, setTitulo] = useState<string>(DataTasks.titulo);
     const [task, setTask] = useState<string>(DataTasks.descricao);
-    const [categoria, setCategoria] = useState<string>(
-        DataTasks.nome_categoria
-    );
+    const [categoria, setCategoria] = useState<number>(DataTasks.categoria_id);
+    const [edit, setEdit] = useState<boolean>();
     const [collors, setCollors] = useState<number>(0);
     let i: number = 0;
     let index: string[] = [
@@ -39,6 +38,11 @@ const TaskCardOut = ({ DataTasks, elementNumber, children }: any) => {
     useEffect(() => {
         setStyle(style);
     }, [style]);
+    const actEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setEdit(!edit);
+    };
+  
 
     return (
         <div
@@ -48,6 +52,7 @@ const TaskCardOut = ({ DataTasks, elementNumber, children }: any) => {
         >
             <section className={styles.boxTitle}>
                 <input
+                    disabled={edit}
                     type="text"
                     placeholder="Titulo"
                     style={{ backgroundColor: style }}
@@ -60,7 +65,12 @@ const TaskCardOut = ({ DataTasks, elementNumber, children }: any) => {
             </section>
             <section>
                 <select name="categoria" id="">
-                    <option value={categoria}>{categoria}</option>
+                    <option value={categoria} selected={categoria === 1}>
+                        Favoritos
+                    </option>
+                    <option value={categoria} selected={categoria === 2}>
+                        outras
+                    </option>
                 </select>
             </section>
 
@@ -78,7 +88,7 @@ const TaskCardOut = ({ DataTasks, elementNumber, children }: any) => {
             </section>
             <div className={styles.boxEdits}>
                 <section>
-                    <button>
+                    <button onClick={actEdit}>
                         <Image
                             className={styles.pencil}
                             src={Pencil}

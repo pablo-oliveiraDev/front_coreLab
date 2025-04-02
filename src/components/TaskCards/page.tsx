@@ -11,7 +11,8 @@ const TaskCards = ({ DataTasks, elementNumber, children }: any) => {
     const [style, setStyle] = useState<string>('');
     const [titulo, setTitulo] = useState<string>(DataTasks.titulo);
     const [task, setTask] = useState<string>(DataTasks.descricao);
-    const [categoria, setCategoria] = useState<string>(DataTasks.nome_categoria);
+    const [categoria, setCategoria] = useState<number>(DataTasks.categoria_id);
+    const [edit, setEdit] = useState<boolean>(true);
     const [collors, setCollors] = useState<number>(0);
     let i: number = 0;
     let index: string[] = [
@@ -37,6 +38,10 @@ const TaskCards = ({ DataTasks, elementNumber, children }: any) => {
     useEffect(() => {
         setStyle(style);
     }, [style]);
+    const actEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setEdit(!edit);
+    };
 
     return (
         <div
@@ -46,26 +51,30 @@ const TaskCards = ({ DataTasks, elementNumber, children }: any) => {
         >
             <section className={styles.boxTitle}>
                 <input
+                disabled={edit}
                     type="text"
                     placeholder="Titulo"
                     style={{ backgroundColor: style }}
                     value={titulo}
                     onChange={e => setTitulo(e.target.value)}
                 />
-                <button className={styles.btn_star}>
+                <button className={styles.btn_star} disabled={edit}>
                     <Image src={Star} alt="icon star" />
                 </button>
             </section>
             <section>
-                <select name="categoria" id="">
-                    <option value={categoria}>
-                        {categoria}
+                <select name="categoria" id="" disabled={edit}>
+                    <option value={categoria} selected={categoria === 1}>
+                        Favoritos
+                    </option>
+                    <option value={categoria} selected={categoria === 2}>
+                        outras
                     </option>
                 </select>
             </section>
 
             <section className={styles.boxTask}>
-                <textarea
+                <textarea disabled={edit}
                     name="tasksTxt"
                     className={styles.tasksTxt}
                     cols={30}
@@ -76,9 +85,10 @@ const TaskCards = ({ DataTasks, elementNumber, children }: any) => {
                     onChange={e => setTask(e.target.value)}
                 ></textarea>
             </section>
+            <section className=""><button style={edit ? { display: 'none' } : {}}>Save</button></section>
             <div className={styles.boxEdits}>
                 <section>
-                    <button>
+                    <button onClick={actEdit}>
                         <Image
                             className={styles.pencil}
                             src={Pencil}

@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import * as T from '@/components/Types/contextTypes';
+import * as T from '../Types/contextTypes';
 import Api from '@/components/Services/api';
 import { toast } from 'react-toastify';
 

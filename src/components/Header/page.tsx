@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 import { FaRegUserCircle } from 'react-icons/fa';
 import iconMenu from '@/assets/images/iconCoreLab.png';
 import searchIcon from '@/assets/images/svg/search.svg';
-import * as T from '@/components/Types/contextTypes';
+import * as T from '../../Types/contextTypes';
 import Image from 'next/image';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 

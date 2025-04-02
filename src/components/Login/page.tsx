@@ -2,7 +2,7 @@
 import styles from '@/assets/styles/pages/login.module.sass';
 import LoadingPage from '@/components/Loading/loading';
 import Link from 'next/link';
-import * as T from '@/components/Types/contextTypes';
+import * as T from '../../Types/contextTypes';
 import { useContext, useEffect, useState } from 'react';
 import { StoreNotesContext } from '@/contexts/StoreNotesProviders';
 import {ResStatusCode} from '@/functions/functions';
